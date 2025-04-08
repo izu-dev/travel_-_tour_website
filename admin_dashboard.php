@@ -53,7 +53,7 @@ if (isset($_POST['update_status']) && isset($_POST['booking_id']) && isset($_POS
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Dashboard - Travel & Tours</title>
+    <title>WanderWorld</title>
     <link rel="stylesheet" href="styles.css">
     <style>
         .admin-container {
@@ -136,7 +136,7 @@ if (isset($_POST['update_status']) && isset($_POST['booking_id']) && isset($_POS
     <header>
         <div class="container">
             <nav class="navbar">
-                <div class="logo">Travel & Tours - Admin</div>
+                <div class="logo">WanderWorld</div>
                 <ul class="nav-links">
                     <li><a href="index.php">View Website</a></li>
                     <li><a href="admin_logout.php">Logout</a></li>

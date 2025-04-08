@@ -49,7 +49,7 @@ if (isset($_POST['cancel_booking']) && isset($_POST['booking_id'])) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Bookings - Travel & Tours</title>
+    <title>WanderWorld</title>
     <link rel="stylesheet" href="styles.css">
     <style>
         .booking-card {
@@ -114,7 +114,7 @@ if (isset($_POST['cancel_booking']) && isset($_POST['booking_id'])) {
     <header>
         <div class="container">
             <nav class="navbar">
-                <div class="logo">Travel & Tours</div>
+                <div class="logo">WanderWorld</div>
                 <ul class="nav-links">
                     <li><a href="index.php">Home</a></li>
                     <li><a href="tours.php">Tours</a></li>

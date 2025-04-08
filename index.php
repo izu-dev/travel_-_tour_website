@@ -19,14 +19,14 @@ if ($result->num_rows > 0) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Travel & Tours - Explore the World</title>
+    <title>WanderWorld - Explore the World</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
     <header>
         <div class="container">
             <nav class="navbar">
-                <div class="logo">Travel & Tours</div>
+                <div class="logo">WanderWorld</div>
                 <ul class="nav-links">
                     <li><a href="index.php">Home</a></li>
                     <li><a href="tours.php">Tours</a></li>
@@ -66,7 +66,7 @@ if ($result->num_rows > 0) {
                         <p><strong>Location:</strong> <?php echo $tour['location']; ?></p>
                         <p><strong>Duration:</strong> <?php echo $tour['duration']; ?></p>
                         <div class="tour-price">$<?php echo $tour['price']; ?></div>
-                        <a href="tour-details.php?id=<?php echo $tour['id']; ?>" class="btn">View Details</a>
+                        <a href="tour-details.php id=<?php echo $tour['id']; ?>" class="btn">View Details</a>
                     </div>
                 </div>
                 <?php endforeach; ?>

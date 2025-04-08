@@ -1,76 +1,75 @@
 <?php
-session_start();
-include 'db_connect.php';
+    session_start();
+    include 'db_connect.php';
 
-// Check if tour ID is provided
-$tour_id = filter_var($_GET['id'], FILTER_VALIDATE_INT);
-if (!$tour_id) {
-// if (!isset($_GET['id']) || empty($_GET['id'])) {
-    // die("invalid tour id");
-    header("Location: tours.php");
-    exit();
-}
-
-$tour_id = $_GET['id'];
-
-// Fetch tour details
-$stmt = $conn->prepare("SELECT * FROM tours WHERE id = ?");
-$stmt->bind_param("i", $tour_id);
-$stmt->execute();
-$result = $stmt->get_result();
-
-if ($result->num_rows === 0) {
-    header("Location: tours.php");
-    exit();
-}
-
-$tour = $result->fetch_assoc();
-
-// Process booking form
-$error = '';
-$success = '';
-
-if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_SESSION['user_id'])) {
-    $booking_date = $_POST['booking_date'];
-    $number_of_people = $_POST['number_of_people'];
-    $user_id = $_SESSION['user_id'];
-    
-    // Calculate total price
-    $total_price = $tour['price'] * $number_of_people;
- 
-    if (!is_numeric($number_of_people) || $number_of_people < 1) {
-        $error = "Number of people must be a valid number greater than 0.";
-    } elseif (!strtotime($booking_date)) {
-        $error = "Invalid booking date.";
-    } elseif (strtotime($booking_date) < strtotime(date('Y-m-d'))) {
-        $error = "Booking date cannot be in the past.";
-
-         // Insert booking
-        $stmt = $conn->prepare("INSERT INTO bookings (user_id, tour_id, booking_date, number_of_people, total_price, status) VALUES (?, ?, ?, ?, ?, 'pending')");
-        $total_price = $tour['price'] * $number_of_people;
-        $stmt->bind_param("iisid", $user_id, $tour_id, $booking_date, $number_of_people, $total_price);
-        
-        if ($stmt->execute()) {
-            $success = "Booking successful! You can view your booking details in your dashboard.";
-            header("Location: dashboard.php");
-            exit();
-        } else {
-            error_log("Database error: " . $stmt->error);
-            $error = "An error occurred while processing your booking. Please try again later.";
-        
-            // $error = "Error: " . $stmt->error;
-            // exit();
-        }
-        
-        
+    // Check if tour ID is provided
+    // $tour_id = filter_var($_GET['id'], FILTER_VALIDATE_INT);
+    // if (!$tour_id) {
+    if (! isset($_GET['id']) || empty($_GET['id'])) {
+        die("invalid tour id");
+        header("Location: tours.php");
+        exit();
     }
-    // /
-}
 
-if (!is_numeric($number_of_people) || $number_of_people < 1) {
-    $error = "Number of people must be a valid number greater than 0.";
-}
+    $tour_id = $_GET['id'];
 
+    // Fetch tour details
+    $stmt = $conn->prepare("SELECT * FROM tours WHERE id = ?");
+    $stmt->bind_param("i", $tour_id);
+    $stmt->execute();
+    $result = $stmt->get_result();
+
+    if ($result->num_rows === 0) {
+        header("Location: tours.php");
+        exit();
+    }
+
+    $tour = $result->fetch_assoc();
+
+    // Process booking form
+    $error   = '';
+    $success = '';
+    
+
+    if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_SESSION['user_id'])) {
+        $booking_date     = $_POST['booking_date'];
+        $number_of_people = $_POST['number_of_people'];
+        $user_id          = $_SESSION['user_id'];
+
+        // Calculate total price
+        $total_price = $tour['price'] * $number_of_people;
+
+        if (! is_numeric($number_of_people) || $number_of_people < 1) {
+            $error = "Number of people must be a valid number greater than 0.";
+        } elseif (! strtotime($booking_date)) {
+            $error = "Invalid booking date.";
+        } elseif (strtotime($booking_date) < strtotime(date('Y-m-d'))) {
+            $error = "Booking date cannot be in the past.";
+
+            // Insert booking
+            $stmt        = $conn->prepare("INSERT INTO bookings (user_id, tour_id, booking_date, number_of_people, total_price, status) VALUES (?, ?, ?, ?, ?, 'pending')");
+            $total_price = $tour['price'] * $number_of_people;
+            $stmt->bind_param("iisid", $user_id, $tour_id, $booking_date, $number_of_people, $total_price);
+
+            if ($stmt->execute()) {
+                $success = "Booking successful! You can view your booking details in your dashboard.";
+                header("Location: dashboard.php");
+                exit();
+            } else {
+                error_log("Database error: " . $stmt->error);
+                $error = "An error occurred while processing your booking. Please try again later.";
+
+                // $error = "Error: " . $stmt->error;
+                // exit();
+            }
+
+        }
+        // /
+    }
+
+    // if (! is_numeric($number_of_people) || $number_of_people < 1) {
+    //     $error = "Number of people must be a valid number greater than 0.";
+    // }
 
 
 ?>
@@ -80,7 +79,7 @@ if (!is_numeric($number_of_people) || $number_of_people < 1) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><?php echo $tour['title']; ?> - Travel & Tours</title>
+    <title><?php echo $tour['title']; ?> WanderWorld</title>
     <link rel="stylesheet" href="styles.css">
     <style>
         .tour-details-container {
@@ -89,22 +88,22 @@ if (!is_numeric($number_of_people) || $number_of_people < 1) {
             gap: 30px;
             margin: 50px 0;
         }
-        
+
         .tour-image-large {
             flex: 1;
             min-width: 300px;
         }
-        
+
         .tour-image-large img {
             width: 100%;
             border-radius: 8px;
         }
-        
+
         .tour-info {
             flex: 1;
             min-width: 300px;
         }
-        
+
         .booking-form {
             background-color: var(--white);
             padding: 30px;
@@ -118,7 +117,7 @@ if (!is_numeric($number_of_people) || $number_of_people < 1) {
     <header>
         <div class="container">
             <nav class="navbar">
-                <div class="logo">Travel & Tours</div>
+                <div class="logo">WanderWorld</div>
                 <ul class="nav-links">
                     <li><a href="index.php">Home</a></li>
                     <li><a href="tours.php">Tours</a></li>
@@ -139,37 +138,37 @@ if (!is_numeric($number_of_people) || $number_of_people < 1) {
             <div class="tour-image-large">
                 <img src="<?php echo $tour['image']; ?>" alt="<?php echo $tour['title']; ?>">
             </div>
-            
+
             <div class="tour-info">
                 <h1><?php echo $tour['title']; ?></h1>
                 <div class="tour-price">$<?php echo $tour['price']; ?> per person</div>
-                <p><strong>Location:</strong> <?php echo $tour['location']; ?></p>
-                <p><strong>Duration:</strong> <?php echo $tour['duration']; ?></p>
+                <p><strong>Location:</strong>                                                                                                                                        <?php echo $tour['location']; ?></p>
+                <p><strong>Duration:</strong>                                                                                                                                        <?php echo $tour['duration']; ?></p>
                 <p><?php echo $tour['description']; ?></p>
-                
+
                 <?php if (isset($_SESSION['user_id'])): ?>
                     <div class="booking-form">
                         <h2>Book This Tour</h2>
-                        
-                        <?php if (!empty($error)): ?>
+
+                        <?php if ( empty($error)): ?>
                             <div class="alert alert-danger"><?php echo $error; ?></div>
                         <?php endif; ?>
-                        
-                        <?php if (!empty($success)): ?>
+
+                        <?php if (! empty($success)):  ?>
                             <div class="alert alert-success"><?php echo $success; ?></div>
                         <?php endif; ?>
-                        
+
                         <form action="tour_details.php?id=<?php echo $tour_id; ?>" method="post">
                             <div class="form-group">
                                 <label for="booking_date">Booking Date</label>
                                 <input type="date" id="booking_date" name="booking_date" min="<?php echo date('Y-m-d'); ?>" required>
                             </div>
-                            
+
                             <div class="form-group">
                                 <label for="number_of_people">Number of People</label>
                                 <input type="number" id="number_of_people" name="number_of_people" min="1" value="1" required>
                             </div>
-                            
+
                             <button type="submit" class="form-btn">Book Now</button>
                         </form>
                     </div>
@@ -181,9 +180,6 @@ if (!is_numeric($number_of_people) || $number_of_people < 1) {
             </div>
         </div>
     </div>
-
-   
-
 
     <footer>
         <div class="container">
